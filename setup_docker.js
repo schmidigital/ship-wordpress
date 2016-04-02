@@ -1,0 +1,45 @@
+var shell = require('./shell')
+
+
+console.log("bower install")
+shell("bower install", true);
+
+console.log("npm install")
+shell("npm install", true);
+
+console.log("Using gulp magic to create css and js for live")
+shell("gulp dist", true);
+
+console.log(www_dir)
+
+try {
+  process.chdir(www_dir);
+  console.log('New directory: ' + process.cwd());
+}
+catch (err) {
+  console.log('chdir: ' + err);
+}
+
+console.log("Setup Wordpress Config");
+
+process.env.WORDPRESS_DB_NAME = process.env.WORDPRESS_DB_NAME + "." + branch;
+
+shell( script_dir + "/wp_config.sh")
+
+
+
+console.log("Import current dump");
+console.log(syncExec("wp db reset --yes").stdout)
+
+var database_dir = project_dir + '/database/';
+
+fs.readdir( database_dir,function(err,files){
+    if(err) throw err;
+    files.forEach(function(file){
+      console.log(syncExec("wp db import " + database_dir + file).stdout)
+    });
+
+    console.log(syncExec('wp option update siteurl "http://"' + config.url).stdout)
+    console.log(syncExec('wp option update home "http://"' + config.url).stdout)
+
+});
