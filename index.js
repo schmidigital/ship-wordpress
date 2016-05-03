@@ -82,8 +82,8 @@ module.exports = function (ship) {
         template.web.environment = {};
         
         if (ship.config.environment == "production") {
-            template.wordpress.environment.LETSENCRYPT_HOST = environment_file.ssl.url;
-            template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
+            template.web.environment.LETSENCRYPT_HOST = environment_file.ssl.url;
+            template.web.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
         }
 
         var environment_web = {
