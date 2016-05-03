@@ -13,6 +13,6 @@ do
 	wp db import --allow-root $f
 done
 
-echo "Setting base_url to $WORDPRESSS_BASE_URL"
-wp --allow-root option update siteurl "http://${WORDPRESSS_BASE_URL}"
-wp --allow-root option update home "http://${WORDPRESSS_BASE_URL}"
+echo "Setting base_url to $WORDPRESS_BASE_URL"
+wp --allow-root option update siteurl "http://${WORDPRESS_BASE_URL}"
+wp --allow-root option update home "http://${WORDPRESS_BASE_URL}"
