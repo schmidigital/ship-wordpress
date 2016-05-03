@@ -81,7 +81,7 @@ module.exports = function (ship) {
         // Config Web Container
         template.web.environment = {};
         
-        if (ship.config.environment == "production") {
+        if (environment_file.ssl && environment_file.ssl.active) {
             template.web.environment.LETSENCRYPT_HOST = environment_file.ssl.url;
             template.web.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
         }
