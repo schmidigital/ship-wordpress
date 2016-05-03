@@ -1,16 +1,15 @@
-var shell = require('./shell')
+var util = require('ship-util')
 
 
 console.log("bower install")
-shell("bower install", true);
+util.shell("bower install", true);
 
 console.log("npm install")
-shell("npm install", true);
+util.shell("npm install", true);
 
 console.log("Using gulp magic to create css and js for live")
-shell("gulp dist", true);
+util.shell("gulp dist", true);
 
-console.log(www_dir)
 
 try {
   process.chdir(www_dir);
@@ -20,11 +19,9 @@ catch (err) {
   console.log('chdir: ' + err);
 }
 
-console.log("Setup Wordpress Config");
-
 process.env.WORDPRESS_DB_NAME = process.env.WORDPRESS_DB_NAME + "." + branch;
 
-shell( script_dir + "/wp_config.sh")
+util.shell( script_dir + "/wp_config.sh")
 
 
 

@@ -1,0 +1,33 @@
+server {
+  listen      80;
+  listen 443 ssl;
+  index       index.php index.html;
+
+  server_name www.DOMAIN DOMAIN;
+
+  root        /www;
+
+  location ~* \.php$ {
+      fastcgi_index   index.php;
+      fastcgi_pass    php:9000;
+      include         /etc/nginx/fastcgi_params;
+      fastcgi_param   SCRIPT_FILENAME     /www$fastcgi_script_name;
+      # I need to add /lab after /srv/http because it requests PHP to look at the root of the web files, not in the lab/ folder
+      # fastcgi_param   SCRIPT_FILENAME     /srv/http/lab$fastcgi_script_name;
+  }
+    
+  location / {
+    index index.php index.html index.htm;
+    try_files $uri $uri/ /index.php?$args;
+  }
+
+  # serve static files directly
+  location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+    access_log off;
+    expires max;
+  }
+
+  gzip on;
+
+  sendfile off;
+}

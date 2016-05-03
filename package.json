@@ -1,15 +1,27 @@
 {
   "name": "ship-wordpress",
   "version": "1.0.0",
-  "description": "",
-  "main": "setup.js",
+  "description": "Wordpress Hook for Ship",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@git.schmidigital.de:7999/ship/ship-wordpress.git"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "spawn-args": "^0.1.0",
+    "async": "^2.0.0-rc.3",
+    "fs-extra": "^0.30.0",
+    "lodash": "^4.11.1",
+    "path": "^0.12.7",
+    "rsa-yamljs": "^0.2.1",
+    "ship-utils": "^1.0.1",
     "sync-exec": "^0.6.2"
+  },
+  "ship": {
+    "isHook": true
   }
 }
