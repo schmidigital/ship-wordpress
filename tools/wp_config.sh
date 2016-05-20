@@ -48,6 +48,10 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 EOPHP
 		chown www:www wp-config.php
 	fi
+	
+	# Adding custom setting
+	echo "define ('WP_CONTENT_DIR','/www/content');" >> wp-config.php
+	echo "define ('WP_CONTENT_URL','/content');" >> wp-config.php
 
 	# see http://stackoverflow.com/a/2705678/433558
 	sed_escape_lhs() {

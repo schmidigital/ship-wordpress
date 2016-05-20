@@ -87,8 +87,8 @@ module.exports = function (ship) {
         }
 
         var environment_web = {
-            DOCKER_USER: "nginx",
-            DOCKER_GROUP: "nginx",
+            DOCKER_USER: "www-data",
+            DOCKER_GROUP: "www-data",
             HOST_USER_ID: stats.uid,
             HOST_GROUP_ID: stats.gid,
             VIRTUAL_HOST: environment_file.url,
@@ -106,11 +106,15 @@ module.exports = function (ship) {
         fs.mkdirsSync(path.resolve(ship.config.appPath) + '/data/config');
         fs.writeFileSync(nginx_config_final_dest, nginx_config_final); 
 
-        // Creating PHP Config
+        // Config PHP Container
         template.php.image = "schmidigital/php-wordpress:" + (ship.config.wordpress.php.version || 5) + "-fpm";
         template.php.environment = {};
         
         var environment_php = {
+            DOCKER_USER: "www-data",
+            DOCKER_GROUP: "www-data",
+            HOST_USER_ID: stats.uid,
+            HOST_GROUP_ID: stats.gid,            
             WORDPRESS_DB_HOST: "db",
             WORDPRESS_DB_NAME: ship.config.wordpress.db.database,
             WORDPRESS_DB_USER: "root",

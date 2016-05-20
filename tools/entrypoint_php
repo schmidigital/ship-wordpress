@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+
+echo "Setting permissions for php container..."
+/tools/permission_fix
+chown -R www-data:www-data /www
+echo "Done."
+
+echo "$@"
+exec "$@"
