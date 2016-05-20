@@ -8,6 +8,7 @@ var async = require('async'),
     path = require('path'),
     YAML = require('rsa-yamljs'),
     syncExec = require('sync-exec'),
+    http = require('http'),
     _ = require('lodash');
 
 
@@ -114,16 +115,38 @@ module.exports = function (ship) {
             DOCKER_USER: "www-data",
             DOCKER_GROUP: "www-data",
             HOST_USER_ID: stats.uid,
-            HOST_GROUP_ID: stats.gid,            
-            WORDPRESS_DB_HOST: "db",
-            WORDPRESS_DB_NAME: ship.config.wordpress.db.database,
-            WORDPRESS_DB_USER: "root",
-            WORDPRESS_DB_PASSWORD: ship.config.wordpress.db.root_password,
-            WORDPRESS_BASE_URL: environment_file.url
+            HOST_GROUP_ID: stats.gid
         }
         
         _.merge(template.php.environment, environment_php) 
 
+
+        // Create Wordpress Config
+        var wp_config_file = fs.readFileSync(path.resolve(__dirname, './config/wp-config.php.template')).toString();
+        
+        // Get Salt from WP API
+        http.get({
+            hostname: 'api.wordpress.org',
+            port: 80,
+            path: '/secret-key/1.1/salt',
+            agent: false  // create a new agent just for this one request
+            }, (res) => {
+                res.setEncoding('utf8');
+                res.on('data', function (salt) {
+                    wp_config_file = wp_config_file.replace("SALT_BLOCK", salt)
+                    
+                    wp_config_file = wp_config_file.replace("database_name_here", ship.config.wordpress.db.database)
+                    wp_config_file = wp_config_file.replace("username_here", ship.config.wordpress.db.user)
+                    wp_config_file = wp_config_file.replace("password_here", ship.config.wordpress.db.password)
+                    wp_config_file = wp_config_file.replace("localhost", "db");
+                    
+                    var wp_config_dest = path.resolve(ship.config.appPath) + '/www/wordpress/wp-config.php';
+        
+                    fs.writeFileSync(wp_config_dest, wp_config_file); 
+                });
+                // Do stuff with response
+        })
+        
         // Config DB Container
         template.db.environment = {};
         

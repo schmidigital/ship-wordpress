@@ -7,10 +7,5 @@ echo "Setting permissions for php container..."
 chown -R www-data:www-data /www
 echo "Done."
 
-echo "Set WP Config"
-cd /www/wordpress
-/tools/wp_config.sh
-echo "Done."
-
 echo "Execute Command $@"
 exec "$@"
