@@ -46,12 +46,19 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 }
 
 EOPHP
-		chown www:www wp-config.php
+		chown www-data:www-data wp-config.php
 	fi
 	
 	# Adding custom setting
-	echo "define ('WP_CONTENT_DIR','/www/content');" >> wp-config.php
-	echo "define ('WP_CONTENT_URL','/content');" >> wp-config.php
+	if grep "WP_CONTENT_DIR" wp-config.php > /dev/null
+	then
+		# code if found
+		echo "Wp Content Dir already set. Nice"
+	else
+		echo "Setting WP Content Folder into Config"
+		echo "define ('WP_CONTENT_DIR','/www/content');" >> wp-config.php
+		echo "define ('WP_CONTENT_URL','/content');" >> wp-config.php
+	fi
 
 	# see http://stackoverflow.com/a/2705678/433558
 	sed_escape_lhs() {
