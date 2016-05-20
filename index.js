@@ -71,6 +71,7 @@ module.exports = function (ship) {
       
         // Copy Tools
         fs.copySync(path.resolve(__dirname,'./tools'), path.resolve(ship.config.appPath, './data/tools'));
+        fs.copySync(path.resolve(__dirname,'./images'), path.resolve(ship.config.appPath, './data/images'));
 
         syncExec('chmod -R +x ' + ship.config.appPath + '/data/tools/*').stdout.replace(/(\r\n|\n|\r)/gm,"")
 
@@ -79,33 +80,59 @@ module.exports = function (ship) {
         var environment_file = require(path.resolve(ship.config.appPath, './config/environment/', ship.config.environment) + '.js');
 
 
-        // Config Web Container
-        template.web.environment = {};
+        // Config Wordpress Container
+        template.wordpress.environment = {};
         
         if (environment_file.ssl && environment_file.ssl.active) {
-            template.web.environment.LETSENCRYPT_HOST = environment_file.ssl.url;
-            template.web.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
+            template.wordpress.environment.LETSENCRYPT_HOST = environment_file.ssl.url;
+            template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
         }
+        
+        var virtual_host_wordpress = (ship.config.angular ? "wordpress." + environment_file.url : environment_file.url)
 
-        var environment_web = {
+        var environment_wordpress = {
             DOCKER_USER: "www-data",
             DOCKER_GROUP: "www-data",
             HOST_USER_ID: stats.uid,
             HOST_GROUP_ID: stats.gid,
-            VIRTUAL_HOST: environment_file.url,
+            VIRTUAL_HOST: virtual_host_wordpress,
         }
 
-        _.merge(template.web.environment, environment_web)
+        _.merge(template.wordpress.environment, environment_wordpress)
+
+        
+        // Config Angular2 Container (Optional)
+        if (ship.config.angular) {
+            var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
+            template_angular.angular.environment = {}
+            
+            var environment_angular = {
+                /*DOCKER_USER: "www-data",
+                DOCKER_GROUP: "www-data",
+                HOST_USER_ID: stats.uid,
+                HOST_GROUP_ID: stats.gid,*/
+                VIRTUAL_HOST: environment_file.url
+            }
+            
+            _.merge(template_angular.angular.environment, environment_angular);
+            template = _.merge(template, template_angular);
+        }
 
 
         // Creating Nginx Config
         var nginx_template = fs.readFileSync(path.resolve(__dirname, './config/nginx.conf.template')).toString();
+        var domains = "www." + environment_file.url + " " + environment_file.url;
 
-        var nginx_config_final = nginx_template.replace(/DOMAIN/g, environment_file.url);
+        if (ship.config.angular) 
+            domains = "wordpress." + environment_file.url;
+            
+        var nginx_config_final = nginx_template.replace(/DOMAINS/g, domains);
+        
         var nginx_config_final_dest = path.resolve(ship.config.appPath) + '/data/config/nginx.conf';
 
         fs.mkdirsSync(path.resolve(ship.config.appPath) + '/data/config');
         fs.writeFileSync(nginx_config_final_dest, nginx_config_final); 
+
 
         // Config PHP Container
         template.php.image = "schmidigital/php-wordpress:" + (ship.config.wordpress.php.version || 5) + "-fpm";
@@ -170,7 +197,7 @@ module.exports = function (ship) {
         fs.writeFileSync(docker_compose_dest, docker_compose_file); 
 
         
-        utils.shell("docker-compose up -d")
+        //utils.shell("docker-compose up -d")
     }
 
 

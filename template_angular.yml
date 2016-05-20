@@ -1,0 +1,9 @@
+angular:
+  build: ./data/images/angular
+  links:
+    - wordpress
+  volumes_from:
+    - data
+  volumes:
+    - "./data/tools:/tools"
+  entrypoint: /tools/entrypoint_angular

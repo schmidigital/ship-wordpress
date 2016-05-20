@@ -3,7 +3,7 @@ server {
   listen 443 ssl;
   index       index.php index.html;
 
-  server_name www.DOMAIN DOMAIN;
+  server_name DOMAINS;
 
   root /www;
 
@@ -23,7 +23,6 @@ server {
       # I need to add /lab after /srv/http because it requests PHP to look at the root of the web files, not in the lab/ folder
       # fastcgi_param   SCRIPT_FILENAME     /srv/http/lab$fastcgi_script_name;
   }
-  
   
   
   # serve static files directly

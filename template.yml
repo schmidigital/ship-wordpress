@@ -1,4 +1,4 @@
-web:
+wordpress:
   image: nginx
   links:
     - db
@@ -8,7 +8,7 @@ web:
   volumes:
     - "./data/config/nginx.conf:/etc/nginx/conf.d/default.conf"
     - "./data/tools:/tools"
-  entrypoint: /tools/entrypoint_web
+  entrypoint: /tools/entrypoint_wordpress
   command: 'nginx -g "daemon off;"'
 data:
   image: alpine
