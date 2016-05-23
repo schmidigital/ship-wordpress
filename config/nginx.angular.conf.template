@@ -1,0 +1,135 @@
+server {
+  listen      80;
+  listen 443 ssl;
+  index       index.php index.html;
+
+  server_name www.DOMAIN DOMAIN;
+
+  root /www;
+
+  location / {
+    root /www/angular/dist/;
+  }
+
+
+  gzip on;
+
+  sendfile off;
+}
+
+
+
+server {
+  listen      80;
+  listen 443 ssl;
+  index       index.php index.html;
+
+  server_name api.DOMAIN;
+
+  root /www;
+
+  
+  # serve static files directly
+  location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt)$ {
+    
+    access_log off;
+    expires max;
+  }
+
+
+  location / {
+    root /www/wordpress;
+
+    index index.php index.html index.htm;
+    try_files $uri $uri/ /index.php?$args;
+  }
+  
+  location ~ /.+\.php$ {
+      root /www/wordpress;
+  
+      fastcgi_index   index.php;
+      fastcgi_pass    php:9000;
+      include         /etc/nginx/fastcgi_params;
+      fastcgi_param   SCRIPT_FILENAME     /www/wordpress$fastcgi_script_name;
+      # I need to add /lab after /srv/http because it requests PHP to look at the root of the web files, not in the lab/ folder
+      # fastcgi_param   SCRIPT_FILENAME     /srv/http/lab$fastcgi_script_name;
+  }
+  
+
+  gzip on;
+  sendfile off;
+}
+
+
+server {
+  listen      80;
+  listen 443 ssl;
+  index       index.php index.html;
+
+  server_name admin.DOMAIN;
+
+  root /www;
+
+  
+  # serve static files directly
+  location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt)$ {
+    
+    access_log off;
+    expires max;
+  }
+
+
+  location / {
+    root /www/wordpress;
+
+    index index.php index.html index.htm;
+    try_files $uri $uri/ /index.php?$args;
+  }
+  
+  location ~ /.+\.php$ {
+      root /www/wordpress;
+  
+      fastcgi_index   index.php;
+      fastcgi_pass    php:9000;
+      include         /etc/nginx/fastcgi_params;
+      fastcgi_param   SCRIPT_FILENAME     /www/wordpress$fastcgi_script_name;
+      # I need to add /lab after /srv/http because it requests PHP to look at the root of the web files, not in the lab/ folder
+      # fastcgi_param   SCRIPT_FILENAME     /srv/http/lab$fastcgi_script_name;
+  }
+  
+
+  gzip on;
+  sendfile off;
+}
+
+
+server {
+  listen      80;
+  listen 443 ssl;
+  index       index.php index.html;
+
+  server_name deploy.DOMAIN;
+
+  root /www/deploy;
+
+  location / {
+    
+    try_files $uri /index.php?$args;
+  }
+  
+  location ~ /.+\.php$ {
+      fastcgi_index   index.php;
+      fastcgi_pass    php:9000;
+      include         /etc/nginx/fastcgi_params;
+      fastcgi_param   SCRIPT_FILENAME     /www/deploy$fastcgi_script_name;
+      # I need to add /lab after /srv/http because it requests PHP to look at the root of the web files, not in the lab/ folder
+      # fastcgi_param   SCRIPT_FILENAME     /srv/http/lab$fastcgi_script_name;
+  }
+
+  gzip on;
+
+  sendfile off;
+}
+
+
+

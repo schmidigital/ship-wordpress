@@ -4,7 +4,7 @@ set -e
 
 echo "Setting permissions for php container..."
 /tools/permission_fix
-chown -R www-data:www-data /www
+chown -R www-data:www-data /www || true
 echo "Done."
 
 echo "Execute Command $@"

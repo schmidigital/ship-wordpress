@@ -1,7 +1,5 @@
 angular:
   build: ./data/images/angular
-  links:
-    - wordpress
   volumes_from:
     - data
   volumes:

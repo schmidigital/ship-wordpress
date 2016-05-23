@@ -88,45 +88,47 @@ module.exports = function (ship) {
             template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
         }
         
-        var virtual_host_wordpress = (ship.config.angular ? "wordpress." + environment_file.url : environment_file.url)
-
+        var virtual_domains = "www." + environment_file.url
+                              + "," + environment_file.url
+                              + "," + "deploy." + environment_file.url
+                              + "," + "api." + environment_file.url
+                              + "," + "admin." + environment_file.url;
+        
         var environment_wordpress = {
             DOCKER_USER: "www-data",
             DOCKER_GROUP: "www-data",
             HOST_USER_ID: stats.uid,
             HOST_GROUP_ID: stats.gid,
-            VIRTUAL_HOST: virtual_host_wordpress,
+            VIRTUAL_HOST: virtual_domains,
         }
 
         _.merge(template.wordpress.environment, environment_wordpress)
 
-        
         // Config Angular2 Container (Optional)
         if (ship.config.angular) {
             var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
-            template_angular.angular.environment = {}
+            /*template_angular.angular.environment = {}
             
             var environment_angular = {
-                /*DOCKER_USER: "www-data",
+                DOCKER_USER: "www-data",
                 DOCKER_GROUP: "www-data",
                 HOST_USER_ID: stats.uid,
-                HOST_GROUP_ID: stats.gid,*/
-                VIRTUAL_HOST: environment_file.url
+                HOST_GROUP_ID: stats.gid
             }
             
-            _.merge(template_angular.angular.environment, environment_angular);
+            _.merge(template_angular.angular.environment, environment_angular);*/
             template = _.merge(template, template_angular);
         }
 
 
         // Creating Nginx Config
-        var nginx_template = fs.readFileSync(path.resolve(__dirname, './config/nginx.conf.template')).toString();
-        var domains = "www." + environment_file.url + " " + environment_file.url;
-
-        if (ship.config.angular) 
-            domains = "wordpress." + environment_file.url;
+        var nginx_file = "nginx.conf.template";
+        if (ship.config.angular)
+            nginx_file = "nginx.angular.conf.template";
+        
+        var nginx_template = fs.readFileSync(path.resolve(__dirname, './config/' + nginx_file)).toString();
             
-        var nginx_config_final = nginx_template.replace(/DOMAINS/g, domains);
+        var nginx_config_final = nginx_template.replace(/DOMAIN/g, environment_file.url);
         
         var nginx_config_final_dest = path.resolve(ship.config.appPath) + '/data/config/nginx.conf';
 
@@ -192,7 +194,6 @@ module.exports = function (ship) {
 
         var docker_compose_file = YAML.stringify(template, 4);
         var docker_compose_dest = path.resolve(ship.config.appPath) + '/docker-compose.yml';
-
         
         fs.writeFileSync(docker_compose_dest, docker_compose_file); 
 

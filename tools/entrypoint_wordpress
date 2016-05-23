@@ -4,7 +4,7 @@ set -e
 
 echo "Setting permissions for web container..."
 /tools/permission_fix
-chown -R www-data:www-data /www
+chown -R www-data:www-data /www || true
 echo "Done."
 
 nginx -g "daemon off;"
