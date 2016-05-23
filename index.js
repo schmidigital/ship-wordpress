@@ -154,27 +154,36 @@ module.exports = function (ship) {
         var wp_config_file = fs.readFileSync(path.resolve(__dirname, './config/wp-config.php.template')).toString();
         
         // Get Salt from WP API
-        http.get({
-            hostname: 'api.wordpress.org',
-            port: 80,
-            path: '/secret-key/1.1/salt',
-            agent: false  // create a new agent just for this one request
-            }, (res) => {
-                res.setEncoding('utf8');
-                res.on('data', function (salt) {
-                    wp_config_file = wp_config_file.replace("SALT_BLOCK", salt)
-                    
-                    wp_config_file = wp_config_file.replace("database_name_here", ship.config.wordpress.db.database)
-                    wp_config_file = wp_config_file.replace("username_here", ship.config.wordpress.db.user)
-                    wp_config_file = wp_config_file.replace("password_here", ship.config.wordpress.db.password)
-                    wp_config_file = wp_config_file.replace("localhost", "db");
-                    
-                    var wp_config_dest = path.resolve(ship.config.appPath) + '/www/wordpress/wp-config.php';
-        
-                    fs.writeFileSync(wp_config_dest, wp_config_file); 
-                });
-                // Do stuff with response
-        })
+        try {
+            var request =  http.get({
+                hostname: 'api.wordpress.org',
+                port: 80,
+                path: '/secret-key/1.1/salt',
+                agent: false  // create a new agent just for this one request
+                }, (res) => {
+                    res.setEncoding('utf8');
+                    res.on('data', function (salt) {
+                        wp_config_file = wp_config_file.replace("SALT_BLOCK", salt)
+                        
+                        wp_config_file = wp_config_file.replace("database_name_here", ship.config.wordpress.db.database)
+                        wp_config_file = wp_config_file.replace("username_here", ship.config.wordpress.db.user)
+                        wp_config_file = wp_config_file.replace("password_here", ship.config.wordpress.db.password)
+                        wp_config_file = wp_config_file.replace("localhost", "db");
+                        
+                        var wp_config_dest = path.resolve(ship.config.appPath) + '/www/wordpress/wp-config.php';
+            
+                        fs.writeFileSync(wp_config_dest, wp_config_file); 
+                    });
+            })
+            
+            request.on('error', function (err) {
+                console.log("No Internet Connection or Wordpress Site not reachable! Could not make hash salt for Wordpress :/");
+            });
+        }
+       
+        catch (e) {
+            console.log("No Internet connection. Could not get salt for wordpress. Continueing anyway.")
+        }
         
         // Config DB Container
         template.db.environment = {};
