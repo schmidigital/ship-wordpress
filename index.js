@@ -217,10 +217,9 @@ module.exports = function (ship) {
         
         syncExec("docker-compose up -d")
         
-        process.chdir('./www/angular');
-        utils.shell("npm start")
+        //process.chdir('./www/angular');
+        //utils.shell("npm start")
     }
-
 
 
   };
