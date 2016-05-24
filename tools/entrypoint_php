@@ -3,7 +3,7 @@ set -e
 
 
 echo "Setting permissions for php container..."
-/tools/permission_fix
+/tools/permission_fix || true
 chown -R www-data:www-data /www || true
 echo "Done."
 
