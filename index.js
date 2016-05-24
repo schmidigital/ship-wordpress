@@ -189,13 +189,6 @@ module.exports = function (ship) {
             wp_config_file = wp_config_file.replace("password_here", ship.config.wordpress.db.password)
             wp_config_file = wp_config_file.replace("localhost", "db");
             
-            if () {
-                define('FORCE_SSL_ADMIN', true);
-
-                if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
-                    $_SERVER['HTTPS']='on';
-            }
-            
             var wp_config_dest = path.resolve(ship.config.appPath) + '/www/wordpress/wp-config.php';
             
             fs.writeFileSync(wp_config_dest, wp_config_file); 
