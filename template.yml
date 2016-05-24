@@ -1,5 +1,5 @@
 wordpress:
-  image: nginx
+  image: mariadb
   links:
     - db
     - php
