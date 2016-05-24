@@ -83,17 +83,18 @@ module.exports = function (ship) {
         // Config Wordpress Container
         template.wordpress.environment = {};
         
-        if (environment_file.ssl && environment_file.ssl.active) {
-            template.wordpress.environment.LETSENCRYPT_HOST = environment_file.ssl.url;
-            template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
-        }
-        
+
         var virtual_domains = "www." + environment_file.url
                               + "," + environment_file.url
                               + "," + "deploy." + environment_file.url
                               + "," + "api." + environment_file.url
                               + "," + "admin." + environment_file.url;
-        
+   
+        if (environment_file.ssl && environment_file.ssl.active) {
+            template.wordpress.environment.LETSENCRYPT_HOST = virtual_domains;
+            template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
+        }
+             
         var environment_wordpress = {
             DOCKER_USER: "www-data",
             DOCKER_GROUP: "www-data",
@@ -108,6 +109,11 @@ module.exports = function (ship) {
         if (ship.config.angular) {
             var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
             template_angular.angular.environment = {}
+            
+            if (environment_file.ssl && environment_file.ssl.active) {
+                template.wordpress.environment.LETSENCRYPT_HOST = "dev." + environment_file.url;
+                template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
+            }
             
             var environment_angular = {
                 DOCKER_USER: "www-data",
