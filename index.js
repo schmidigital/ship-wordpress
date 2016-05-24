@@ -116,7 +116,7 @@ module.exports = function (ship) {
                 HOST_USER_ID: stats.uid,
                 HOST_GROUP_ID: stats.gid,
                 VIRTUAL_HOST: "dev." + environment_file.url,
-                VIRTUAL_PORT: "3000",
+                VIRTUAL_PORT: "80",
                 HTTPS_METHOD: "noredirect",
                 ENABLE_SSL: "false"
             }
