@@ -10,8 +10,6 @@ wordpress:
     - "./data/tools:/tools"
   entrypoint: /tools/entrypoint_wordpress
   command: 'nginx -g "daemon off;"'
-  ports: 
-    - "4000:80"
 php:
   links:
     - db    

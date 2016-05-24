@@ -94,6 +94,10 @@ module.exports = function (ship) {
             template.wordpress.environment.LETSENCRYPT_HOST = virtual_domains;
             template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
         }
+        
+        if (ship.config.environment == "development")
+            template.wordpress.ports = ["4000:80"];
+            
              
         var environment_wordpress = {
             DOCKER_USER: "www-data",
