@@ -98,6 +98,7 @@ module.exports = function (ship) {
         if (ship.config.environment == "development")
             template.wordpress.ports = ["4000:80"];
             
+            console.log(ship.config.environment)
              
         var environment_wordpress = {
             DOCKER_USER: "www-data",
