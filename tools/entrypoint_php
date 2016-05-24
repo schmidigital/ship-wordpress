@@ -7,5 +7,5 @@ echo "Setting permissions for php container..."
 chown -R www-data:www-data /www || true
 echo "Done."
 
-echo "Execute Command $@"
-exec "$@"
+echo "Starting PHP FPM."
+php-fpm -R
