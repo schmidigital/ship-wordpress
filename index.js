@@ -116,7 +116,8 @@ module.exports = function (ship) {
                 HOST_USER_ID: stats.uid,
                 HOST_GROUP_ID: stats.gid,
                 VIRTUAL_HOST: "dev." + environment_file.url,
-                VIRTUAL_PORT: "3000"
+                VIRTUAL_PORT: "3000",
+                HTTPS_METHOD: "noredirect"
             }
             
             _.merge(template_angular.angular.environment, environment_angular);
