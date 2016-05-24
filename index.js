@@ -107,16 +107,18 @@ module.exports = function (ship) {
         // Config Angular2 Container (Optional)
         if (ship.config.angular) {
             var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
-            /*template_angular.angular.environment = {}
+            template_angular.angular.environment = {}
             
             var environment_angular = {
                 DOCKER_USER: "www-data",
                 DOCKER_GROUP: "www-data",
                 HOST_USER_ID: stats.uid,
-                HOST_GROUP_ID: stats.gid
+                HOST_GROUP_ID: stats.gid,
+                VIRTUAL_HOST: "dev." + environment_file.url,
+                VIRTUAL_PORT: "3000"
             }
             
-            _.merge(template_angular.angular.environment, environment_angular);*/
+            _.merge(template_angular.angular.environment, environment_angular);
             template = _.merge(template, template_angular);
         }
 
