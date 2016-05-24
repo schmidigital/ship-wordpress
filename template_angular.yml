@@ -1,7 +1,6 @@
 angular:
   build: ./data/images/angular
-  volumes_from:
-    - data
   volumes:
+    - "./www:/www"
     - "./data/tools:/tools"
   entrypoint: /tools/entrypoint_angular

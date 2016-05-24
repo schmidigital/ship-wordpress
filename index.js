@@ -215,7 +215,10 @@ module.exports = function (ship) {
         fs.writeFileSync(docker_compose_dest, docker_compose_file); 
 
         
-        utils.shell("docker-compose up -d")
+        syncExec("docker-compose up -d")
+        
+        process.chdir('./www/angular');
+        utils.shell("npm start")
     }
 
 

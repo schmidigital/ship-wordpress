@@ -3,19 +3,15 @@ wordpress:
   links:
     - db
     - php
-  volumes_from:
-    - data
   volumes:
+    - "./www:/www"
     - "./data/config/sites.conf:/etc/nginx/conf.d/default.conf"
     - "./data/config/nginx.conf:/etc/nginx/nginx.conf"
     - "./data/tools:/tools"
   entrypoint: /tools/entrypoint_wordpress
   command: 'nginx -g "daemon off;"'
-data:
-  image: alpine
-  volumes:
-    - "./www:/www"
-  command: sh
+  ports: 
+    - "4000:80"
 php:
   links:
     - db    

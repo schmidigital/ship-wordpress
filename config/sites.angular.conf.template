@@ -20,8 +20,8 @@ server {
 
 
 server {
-  listen      80;
-  listen 443 ssl;
+  listen 80 default_server http2;
+  listen 443 ssl default_server http2;
   index       index.php index.html;
 
   server_name api.DOMAIN;
