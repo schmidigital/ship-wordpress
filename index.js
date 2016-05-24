@@ -111,8 +111,8 @@ module.exports = function (ship) {
             template_angular.angular.environment = {}
             
             if (environment_file.ssl && environment_file.ssl.active) {
-                template.wordpress.environment.LETSENCRYPT_HOST = "dev." + environment_file.url;
-                template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
+                template_angular.angular.environment.LETSENCRYPT_HOST = "dev." + environment_file.url;
+                template_angular.angular.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
             }
             
             var environment_angular = {
