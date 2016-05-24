@@ -117,7 +117,8 @@ module.exports = function (ship) {
                 HOST_GROUP_ID: stats.gid,
                 VIRTUAL_HOST: "dev." + environment_file.url,
                 VIRTUAL_PORT: "3000",
-                HTTPS_METHOD: "noredirect"
+                HTTPS_METHOD: "noredirect",
+                ENABLE_SSL: "false"
             }
             
             _.merge(template_angular.angular.environment, environment_angular);
@@ -188,6 +189,13 @@ module.exports = function (ship) {
             wp_config_file = wp_config_file.replace("password_here", ship.config.wordpress.db.password)
             wp_config_file = wp_config_file.replace("localhost", "db");
             
+            if () {
+                define('FORCE_SSL_ADMIN', true);
+
+                if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
+                    $_SERVER['HTTPS']='on';
+            }
+            
             var wp_config_dest = path.resolve(ship.config.appPath) + '/www/wordpress/wp-config.php';
             
             fs.writeFileSync(wp_config_dest, wp_config_file); 
@@ -215,7 +223,7 @@ module.exports = function (ship) {
         fs.writeFileSync(docker_compose_dest, docker_compose_file); 
 
         
-        //utils.shell("docker-compose up -d")
+        utils.shell("docker-compose up -d")
     }
 
 
