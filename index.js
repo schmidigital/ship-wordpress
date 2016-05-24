@@ -110,11 +110,6 @@ module.exports = function (ship) {
             var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
             template_angular.angular.environment = {}
             
-            if (environment_file.ssl && environment_file.ssl.active) {
-                template_angular.angular.environment.LETSENCRYPT_HOST = "dev." + environment_file.url;
-                template_angular.angular.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
-            }
-            
             var environment_angular = {
                 DOCKER_USER: "www-data",
                 DOCKER_GROUP: "www-data",
