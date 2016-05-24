@@ -1,5 +1,5 @@
 wordpress:
-  image: mariadb
+  image: nginx
   links:
     - db
     - php
@@ -23,7 +23,7 @@ php:
     - "./data/dump:/dump"
   entrypoint: /tools/entrypoint_php
 db:
-  image: mysql:5.6
+  image: mariadb
   volumes:
     - "./data/mysql:/var/lib/mysql"
 
