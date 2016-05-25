@@ -12,9 +12,7 @@ wordpress:
   command: 'nginx -g "daemon off;"'
 php:
   links:
-    - db    
-  ports:
-    - "9000"
+    - db
   volumes:
     - "./www:/www"
     - "./data/tools:/tools"
