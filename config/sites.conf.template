@@ -26,7 +26,7 @@ server {
   
   
   # serve static files directly
-  location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt)$ {
+  location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt|svg)$ {
     
     access_log off;
     expires max;
