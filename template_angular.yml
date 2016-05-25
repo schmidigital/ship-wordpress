@@ -2,5 +2,4 @@ angular:
   build: ./data/images/angular
   volumes:
     - "./www:/www"
-    - "./data/tools:/tools"
-  entrypoint: /tools/entrypoint_angular
+  working_dir: /www/angular
