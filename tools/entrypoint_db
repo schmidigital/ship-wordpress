@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+
+echo "Setting permissions for db container..."
+/tools/permission_fix || true
+chown -R mysql:mysql /var/lib/mysql || true
+echo "Done."
+
+echo "Starting MySQL."
+
+
+exec docker-entrypoint.sh mysqld

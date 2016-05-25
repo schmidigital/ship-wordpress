@@ -76,9 +76,16 @@ module.exports = function (ship) {
         syncExec('chmod -R +x ' + ship.config.appPath + '/data/tools/*').stdout.replace(/(\r\n|\n|\r)/gm,"")
 
         var template = YAML.load( path.resolve(__dirname, './template.yml'));
-        var stats = fs.statSync(ship.config.appPath + '/package.json');
+        
         var environment_file = require(path.resolve(ship.config.appPath, './config/environment/', ship.config.environment) + '.js');
 
+        var stats = fs.statSync(ship.config.appPath + '/package.json');
+
+        // Workaround for virtualbox, which always maps to 1000:50
+        if (environment_file.driver == "virtualbox") {
+            stats.uid = 1000;
+            stats.gid = 50;            
+        }
 
         // Config Wordpress Container
         template.wordpress.environment = {};

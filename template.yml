@@ -21,7 +21,9 @@ php:
     - "./data/dump:/dump"
   entrypoint: /tools/entrypoint_php
 db:
-  image: mariadb
+  image: mysql
   volumes:
     - "./data/mysql:/var/lib/mysql"
+    - "./data/tools:/tools"
+  entrypoint: /tools/entrypoint_db
 
