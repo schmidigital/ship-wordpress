@@ -61,11 +61,13 @@ $table_prefix  = 'wp_';
 
 /**
  *
- *  Custom Location of wp-content folder
+ *  Custom Configs for WP
  *
  */
 define ('WP_CONTENT_DIR','/www/content');
 define ('WP_CONTENT_URL','/content');
+define('WP_HOME','https://DOMAIN');
+define('WP_SITEURL','http://DOMAIN');
 
 
 /**

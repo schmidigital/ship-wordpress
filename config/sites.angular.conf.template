@@ -1,6 +1,6 @@
 server {
   listen      80;
-  listen 443 ssl;
+  listen 443 ssl http2;
   index       index.php index.html;
 
   server_name www.DOMAIN DOMAIN;
@@ -14,7 +14,7 @@ server {
 
   gzip on;
 
-  sendfile off;
+  sendfile on;
 }
 
 
@@ -45,8 +45,6 @@ server {
   }
   
   location ~ /.+\.php$ {
-      root /www/wordpress;
-  
       fastcgi_index   index.php;
       fastcgi_pass    php:9000;
       include         /etc/nginx/fastcgi_params;
@@ -57,7 +55,7 @@ server {
   
 
   gzip on;
-  sendfile off;
+  sendfile on;
 }
 
 
@@ -99,7 +97,7 @@ server {
   
 
   gzip on;
-  sendfile off;
+  sendfile on;
 }
 
 
@@ -128,7 +126,7 @@ server {
 
   gzip on;
 
-  sendfile off;
+  sendfile on;
 }
 
 
