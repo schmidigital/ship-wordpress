@@ -1,4 +1,5 @@
 wordpress:
+  restart: always
   image: nginx
   links:
     - db
@@ -11,6 +12,7 @@ wordpress:
   entrypoint: /tools/entrypoint_wordpress
   command: 'nginx -g "daemon off;"'
 php:
+  restart: always
   links:
     - db
   volumes:
@@ -19,6 +21,7 @@ php:
     - "./data/dump:/dump"
   entrypoint: /tools/entrypoint_php
 db:
+  restart: always
   image: mysql
   volumes:
     - "./data/mysql:/var/lib/mysql"

@@ -1,4 +1,5 @@
 angular:
+  restart: always
   build: ./data/images/angular
   volumes:
     - "./www:/www"
