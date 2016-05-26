@@ -76,6 +76,7 @@ server {
 
   root /www;
 
+
   
   # serve static files directly
   location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt|svg)$ {
@@ -87,6 +88,8 @@ server {
 
   location / {
     root /www/wordpress;
+    rewrite ^/(.*)$ http://api.DOMAIN/wp-admin/ permanent;
+    
 
     index index.php index.html index.htm;
     try_files $uri $uri/ /index.php?$args;
