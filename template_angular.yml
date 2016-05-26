@@ -4,3 +4,5 @@ angular:
   volumes:
     - "./www:/www"
   working_dir: /www/angular
+  networks:
+    - proxy-tier
