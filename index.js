@@ -88,7 +88,7 @@ module.exports = function (ship) {
         }
 
         // Config Wordpress Container
-        template.wordpress.environment = {};
+        template.services.wordpress.environment = {};
         
 
         var virtual_domains = "www." + environment_file.url
@@ -98,12 +98,12 @@ module.exports = function (ship) {
                               + "," + "admin." + environment_file.url;
    
         if (environment_file.ssl && environment_file.ssl.active) {
-            template.wordpress.environment.LETSENCRYPT_HOST = virtual_domains;
-            template.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
+            template.services.wordpress.environment.LETSENCRYPT_HOST = virtual_domains;
+            template.services.wordpress.environment.LETSENCRYPT_EMAIL = environment_file.ssl.email;
         }
         
         if (ship.config.environment == "development")
-            template.wordpress.ports = ["4000:80"];
+            template.services.wordpress.ports = ["4000:80"];
             
             console.log(ship.config.environment)
              
@@ -115,12 +115,12 @@ module.exports = function (ship) {
             VIRTUAL_HOST: virtual_domains,
         }
 
-        _.merge(template.wordpress.environment, environment_wordpress)
+        _.merge(template.services.wordpress.environment, environment_wordpress)
 
         // Config Angular2 Container (Optional)
         if (ship.config.angular) {
             var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
-            template_angular.angular.environment = {}
+            template_angular.services.angular.environment = {}
             
             var environment_angular = {
                 DOCKER_USER: "www-data",
@@ -132,7 +132,7 @@ module.exports = function (ship) {
                 ENABLE_SSL: "false"
             }
             
-            _.merge(template_angular.angular.environment, environment_angular);
+            _.merge(template_angular.services.angular.environment, environment_angular);
             template = _.merge(template, template_angular);
         }
 
@@ -158,8 +158,8 @@ module.exports = function (ship) {
 
 
         // Config PHP Container
-        template.php.image = "schmidigital/php-wordpress:" + (ship.config.wordpress.php.version || 5) + "-fpm";
-        template.php.environment = {};
+        template.services.php.image = "schmidigital/php-wordpress:" + (ship.config.wordpress.php.version || 5) + "-fpm";
+        template.services.php.environment = {};
         
         var environment_php = {
             DOCKER_USER: "www-data",
@@ -168,7 +168,7 @@ module.exports = function (ship) {
             HOST_GROUP_ID: stats.gid
         }
         
-        _.merge(template.php.environment, environment_php) 
+        _.merge(template.services.php.environment, environment_php) 
 
 
         // Create Wordpress Config
@@ -210,7 +210,7 @@ module.exports = function (ship) {
         }
         
         // Config DB Container
-        template.db.environment = {};
+        template.services.db.environment = {};
         
         var environment_db = {
             DOCKER_USER: "mysql", 
@@ -223,7 +223,7 @@ module.exports = function (ship) {
             MYSQL_PASSWORD: ship.config.wordpress.db.password
         }
         
-        _.merge(template.db.environment, environment_db) 
+        _.merge(template.services.db.environment, environment_db) 
 
         var docker_compose_file = YAML.stringify(template, 4);
         var docker_compose_dest = path.resolve(ship.config.appPath) + '/docker-compose.yml';
