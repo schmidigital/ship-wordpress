@@ -200,6 +200,11 @@ module.exports = function (ship) {
             wp_config_file = wp_config_file.replace("password_here", ship.config.wordpress.db.password)
             wp_config_file = wp_config_file.replace("localhost", "db");
             
+            var wp_domain = (environment_file.ssl && environment_file.ssl.active ? "https://" : "http://");
+            wp_domain += (ship.config.angular ? "api." : "www.");
+            wp_domain += environment_file.url;
+            
+            wp_config_file = wp_config_file.replace(/DOMAIN/g, wp_domain);
             
             
             var wp_config_dest = path.resolve(ship.config.appPath) + '/www/wordpress/wp-config.php';
