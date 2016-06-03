@@ -17,6 +17,7 @@ server {
 
   location / {
     root /www/angular/dist/;
+    try_files $uri /index.html;
   }
 
 
