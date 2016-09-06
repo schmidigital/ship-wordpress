@@ -157,9 +157,15 @@ module.exports = function (ship) {
             agent: false  // create a new agent just for this one request
             }, (res) => {
                 res.setEncoding('utf8');
-                res.on('data', function (salt) {
-                    write_config(salt);
+                var salt = "";
+
+                res.on('data', function (data) {
+                    salt += data;
                 });
+                
+                res.on('end', function () {
+                    write_config(salt);
+                });            
         })
         
         request.on('error', function (err) {
