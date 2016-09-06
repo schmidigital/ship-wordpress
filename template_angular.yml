@@ -1,5 +1,0 @@
-angular:
-  build: ./data/images/angular
-  volumes:
-    - "./www:/www"
-  working_dir: /www/angular
