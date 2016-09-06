@@ -176,8 +176,7 @@ module.exports = function (ship) {
             wp_config_file = wp_config_file.replace("localhost", "db");
             
             var wp_domain = (environment_file.ssl && environment_file.ssl.active ? "https://" : "http://");
-            wp_domain += (ship.config.api ? "api." : "www.");
-            wp_domain += environment_file.url;
+            wp_domain += (ship.config.auto_www ? "www." : "") + environment_file.url;
             
             wp_config_file = wp_config_file.replace(/DOMAIN/g, wp_domain);
             
