@@ -115,31 +115,8 @@ module.exports = function (ship) {
 
         _.merge(template.wordpress.environment, environment_wordpress)
 
-        // Config Angular2 Container (Optional)
-        if (ship.config.angular) {
-            var template_angular = YAML.load( path.resolve(__dirname, './template_angular.yml'));
-            template_angular.angular.environment = {}
-            
-            var environment_angular = {
-                DOCKER_USER: "www-data",
-                DOCKER_GROUP: "www-data",
-                HOST_USER_ID: stats.uid,
-                HOST_GROUP_ID: stats.gid,
-                VIRTUAL_HOST: "dev." + environment_file.url,
-                HTTPS_METHOD: "noredirect",
-                ENABLE_SSL: "false"
-            }
-            
-            _.merge(template_angular.angular.environment, environment_angular);
-            template = _.merge(template, template_angular);
-        }
-
-
         // Creating Sites Config
         var sites_config_file = "sites.conf.template";
-        
-        if (ship.config.angular)
-            sites_config_file = "sites.angular.conf.template";
         
         var sites_config_template = fs.readFileSync(path.resolve(__dirname, './config/' + sites_config_file)).toString();
         var sites_config_final = sites_config_template.replace(/DOMAIN/g, environment_file.url);
@@ -199,7 +176,7 @@ module.exports = function (ship) {
             wp_config_file = wp_config_file.replace("localhost", "db");
             
             var wp_domain = (environment_file.ssl && environment_file.ssl.active ? "https://" : "http://");
-            wp_domain += (ship.config.angular ? "api." : "www.");
+            wp_domain += (ship.config.api ? "api." : "www.");
             wp_domain += environment_file.url;
             
             wp_config_file = wp_config_file.replace(/DOMAIN/g, wp_domain);
