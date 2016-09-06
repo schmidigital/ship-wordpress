@@ -1,6 +1,6 @@
 {
   "name": "ship-wordpress",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wordpress Hook for Ship",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@git.schmidigital.de:7999/ship/ship-wordpress.git"
+    "url": "git+ssh://git@git.schmid.digital:10022/ship/ship-wordpress.git"
   },
   "author": "",
   "license": "ISC",
