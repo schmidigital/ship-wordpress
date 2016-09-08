@@ -65,7 +65,7 @@ $table_prefix  = 'wp_';
  *
  */
 define ('WP_CONTENT_DIR','/www/content');
-define ('WP_CONTENT_URL','/content');
+define ('WP_CONTENT_URL','DOMAIN/content');
 define('WP_HOME','DOMAIN');
 define('WP_SITEURL','DOMAIN');
 
