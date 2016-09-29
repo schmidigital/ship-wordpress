@@ -8,7 +8,7 @@ server {
   root /www;
   
   # serve static files directly
-  location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt|svg)$ {
+  location ~ /content/.+\.(jpg|jpeg|gif|css|png|js|ico|html|txt|svg|pdf)$ {
     
     access_log off;
     expires max;
