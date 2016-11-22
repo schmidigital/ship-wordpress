@@ -1,6 +1,6 @@
 {
   "name": "ship-wordpress",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wordpress Hook for Ship",
   "main": "index.js",
   "scripts": {
