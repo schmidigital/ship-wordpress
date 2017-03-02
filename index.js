@@ -91,9 +91,11 @@ module.exports = function (ship) {
         template.wordpress.environment = {};
         
 
-        var virtual_domains = "www." + environment_file.url
-                              + "," + environment_file.url
+        var virtual_domains = environment_file.url
                               + "," + "admin." + environment_file.url;
+        if (ship.config.auto_www) {
+            virtual_domains += ",www." + environment_file.url
+        }
    
         if (environment_file.ssl && environment_file.ssl.active) {
             template.wordpress.environment.LETSENCRYPT_HOST = virtual_domains;
